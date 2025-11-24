@@ -1,6 +1,7 @@
 ## Pipe Room
 
----
+This is a clicker game where you try not to let the box get filled.
+
 
 We, Tommy Shinest and plac3holdr, have free time to code a lil baby thing.
 
