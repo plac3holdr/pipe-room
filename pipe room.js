@@ -6,6 +6,8 @@
 
 let waterHeight = 0;
 
+let pipeWaterY = 2;
+
 //miliseconds
 let ms;
 
@@ -19,7 +21,25 @@ function setup() {
 
 function draw() {
   //background(220);
-
+  
+  // animates water flowing from first pipe vv
+  
+  if(pipeWaterY < 400) {
+    pipeWaterY +=6.7;
+  }
+  
+  strokeWeight(0)
+  fill('blue');
+  circle(210, pipeWaterY, 16);
+  
+  // FIRST PIPE
+   
+  stroke(0);
+  strokeWeight(2);
+  fill('gray');
+  rect(200, -1, 20, 50);
+  
+  
   // WATER
   waterHeight = calculateWaterHeight();
   hotWaterRises(waterHeight);
@@ -29,21 +49,25 @@ function draw() {
   gameOver(roomFull);//game over if room is full
 
   
-  // DRAW PIPE
+  // DRAW RANDOM PIPE
   let pipeX;
   ms = millis();
   
   pipeX = random(0, width);
-  
-  stroke("gray")
-  strokeWeight(2.5)
-  // rect(pipeX, 0, 20, 50)
-  
+ 
+  stroke('blue')
+  fill('white')
   text(`${round(ms, 1)}`, 15, 350, 350)
+ 
   
   // after 5secs pass, a pipe will appear
+  
   if(ms > 5000 & ms < 5000 + deltaTime){
-    rect(pipeX, 0, 20, 50)
+    
+    stroke(0);
+    strokeWeight(2)
+    fill('gray');
+    rect(pipeX, -1, 20, 50);    
   }
 
 }
