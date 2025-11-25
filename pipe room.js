@@ -8,19 +8,24 @@ let waterHeight = 0;
 
 let pipeWaterY = 2;
 
-//miliseconds
+let lastPipeTime = 0;
+
+// miliseconds
 let ms;
 
+// equals one bc one pipe at start
+let numOfPipes = 1;
 
 
-function setup() {
-  createCanvas(400, 400,);
+
+function setup(){
+  createCanvas(400, 400);
 }
 
-
+let pipeX = 0;
 
 function draw() {
-  //background(220);
+  console.log(`${numOfPipes} pipes`);
   
   // animates water flowing from first pipe vv
   
@@ -49,28 +54,45 @@ function draw() {
   gameOver(roomFull);//game over if room is full
 
   
-  // DRAW RANDOM PIPE
-  let pipeX;
+  // draws random pipe
+
   ms = millis();
-  
-  pipeX = random(0, width);
  
   stroke('blue')
   fill('white')
+  
+  // displays passing ms (remove later)
   text(`${round(ms, 1)}`, 15, 350, 350)
- 
   
-  // after 5secs pass, a pipe will appear
+  //also funny i made infinite loop with numOfPipes 
   
-  if(ms > 5000 & ms < 5000 + deltaTime){
+// Create a new pipe every 5 seconds
+if (ms - lastPipeTime > 5000) {
+  randomPipe();
+  lastPipeTime = ms; // Update the timestamp
+}
+  
+  // if(ms > 5000 & ms < 5000 + deltaTime){
     
-    stroke(0);
-    strokeWeight(2)
-    fill('gray');
-    rect(pipeX, -1, 20, 50);    
-  }
+  //randomPipe();    
 
 }
+
+
+//when a pipe appears, this grows
+
+function randomPipe() {
+  pipeX = random(0, width);
+  
+  stroke(0);
+  strokeWeight(2)
+  fill('gray');
+  rect(pipeX, -1, 20, 50);
+  
+  numOfPipes += 1;
+}
+
+
 
 function gameOver(isRoomFull) {
   let condition = isRoomFull;
@@ -85,7 +107,6 @@ function gameOver(isRoomFull) {
 //FIX should take in numOfPipes
 function calculateWaterHeight() {
   let waterGrowthRate; // pixels per frame
-  let numOfPipes = 1; //placeholder
   
   waterGrowthRate = numOfPipes;
   
