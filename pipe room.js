@@ -2,7 +2,11 @@
 // this is for p5.js
 
 
+//GLOBAL VARS
 
+let waterHeight = 0;
+
+//miliseconds
 let ms;
 
 
@@ -15,24 +19,15 @@ function setup() {
 
 function draw() {
   //background(220);
-  
+
   // WATER
-  let waterWidth = width;
-  let waterHeight = 0;
-  let waterGrowthRate; // pixels per frame
-  let numOfPipes = 1; //placeholder
+  waterHeight = calculateWaterHeight();
+  hotWaterRises(waterHeight);
   
-  waterGrowthRate = numOfPipes / 4;
-  
-  // starts at zero and increases
-  waterHeight = waterGrowthRate * frameCount
-  
-  fill("blue")
-  
-  // draws water starting at the bottom of the screen
-  rect(0, height - waterHeight, waterWidth, waterHeight);
- 
-  
+  //GAME OVER SCREEN
+  let roomFull = waterHeight > height;
+  gameOver(roomFull);//game over if room is full
+
   
   // DRAW PIPE
   let pipeX;
@@ -51,4 +46,38 @@ function draw() {
     rect(pipeX, 0, 20, 50)
   }
 
+}
+
+function gameOver(isRoomFull) {
+  let condition = isRoomFull;
+  
+  if (condition === true) {
+    textSize(20);
+    fill('yellow');
+    text('Game Over', 100, 300);
+  }
+}
+
+//FIX should take in numOfPipes
+function calculateWaterHeight() {
+  let waterGrowthRate; // pixels per frame
+  let numOfPipes = 1; //placeholder
+  
+  waterGrowthRate = numOfPipes;
+  
+  // FIX later
+  let heightOfWater = waterGrowthRate * frameCount;
+  
+  return heightOfWater; 
+}
+
+
+// draw water depending on parameter heightWater
+function hotWaterRises(h) {
+  let waterWidth = width;
+  let heightWater = h;
+  // draws water starting at the bottom of the screen
+  stroke("blue")
+  fill("blue")
+  rect(0, height - heightWater, waterWidth, heightWater);
 }
