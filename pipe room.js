@@ -72,14 +72,11 @@ if (ms - lastPipeTime > 5000) {
   lastPipeTime = ms; // Update the timestamp
 }
   
-  // if(ms > 5000 & ms < 5000 + deltaTime){
-    
-  //randomPipe();    
 
 }
 
 
-//when a pipe appears, this grows
+
 
 function randomPipe() {
   pipeX = random(0, width);
@@ -88,7 +85,8 @@ function randomPipe() {
   strokeWeight(2)
   fill('gray');
   rect(pipeX, -1, 20, 50);
-  
+
+  //when a pipe appears, this grows
   numOfPipes += 1;
 }
 
@@ -126,3 +124,4 @@ function hotWaterRises(h) {
   fill("blue")
   rect(0, height - heightWater, waterWidth, heightWater);
 }
+
