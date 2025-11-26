@@ -15,7 +15,10 @@ let pipeWaterY = 2;
 let ms = 0; 
 
 let startTime = 0;
+let lastPipeTime = 0;
 
+// equals one bc one pipe at start
+let numOfPipes = 1;
 
 
 function setup() {
@@ -24,7 +27,7 @@ function setup() {
   textSize(22);
 }
 
-
+let pipeX = 0;
 
 function draw() {
   // game starts on a tutorial screen :)
@@ -32,6 +35,7 @@ function draw() {
   
   if (gameRunning === true) {
   //background(220);
+  console.log(`${numOfPipes} pipes`);
   
   // animates water flowing from first pipe vv
   
@@ -59,24 +63,23 @@ function draw() {
   gameOver(roomFull);//game over if room is full
   
   // DRAW RANDOM PIPE
-  let pipeX;
   ms = millis() - startTime;
   
   pipeX = random(0, width);
  
   stroke('blue')
   fill('white')
+  
+  // displays passing ms (remove later)
   text(`${round(ms, 1)}`, 15, 350, 350)
   
-  // after 5secs pass, a pipe will appear
+  //also funny i made infinite loop with numOfPipes 
   
-  if(ms > 5000 & ms < 5000 + deltaTime){
-    
-    stroke(0);
-    strokeWeight(2)
-    fill('gray');
-    rect(pipeX, -1, 20, 50);    
-  }// end of randomPipe maker
+// Create a new pipe every 5 seconds
+if (ms - lastPipeTime > 5000) {
+  randomPipe();
+  lastPipeTime = ms; // Update the timestamp
+}// end of randomPipe maker
     
   } else {
     // runs when gameRunning is false
@@ -85,6 +88,20 @@ function draw() {
   }
 
 } // end of draw
+
+
+
+function randomPipe() {
+  pipeX = random(0, width);
+  
+  stroke(0);
+  strokeWeight(2)
+  fill('gray');
+  rect(pipeX, -1, 20, 50);
+
+  //when a pipe appears, this grows
+  numOfPipes += 1;
+}
 
 
 
@@ -121,7 +138,7 @@ room with water so you don't drown!`,
   //on click, clear the canvas and restart the game
   if (mouseX > 100 && mouseX < 300 && mouseY > 50 && mouseY < 250 && mouseIsPressed === true) {
     gameRunning = true;
-    background(0);
+    background(0);// clears the screen
     frameCount = 0; // for calcWaterHeight
     waterHeight = 0;
     startTime = millis();
@@ -133,7 +150,6 @@ room with water so you don't drown!`,
 
 function calculateWaterHeight() {
   let waterGrowthRate; // pixels per frame
-  let numOfPipes = 1; //placeholder
   
   waterGrowthRate = numOfPipes;
   
