@@ -26,3 +26,6 @@ Issues include:
   - not playable
   - bloo
   - we dont even know how to use funtions yet
+ 
+<img width="319" height="469" alt="image" src="https://github.com/user-attachments/assets/8af41352-bfe4-4233-b164-2a3912355a55" />
+this is what i did on the last commit
