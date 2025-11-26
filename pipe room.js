@@ -10,6 +10,10 @@ let waterHeight = 0;
 
 let pipeWaterY = 2;
 
+//determines starting water height, and is altered in calcWaterHeight()
+let previousHeightOfWater = 0;
+
+
 // miliseconds after new game started
 // not equal to millis()
 let ms = 0; 
@@ -19,6 +23,8 @@ let lastPipeTime = 0;
 
 // equals one bc one pipe at start
 let numOfPipes = 1;
+
+let noPipes = false;
 
 
 function setup() {
@@ -40,7 +46,7 @@ function draw() {
   // animates water flowing from first pipe vv
   
   if(pipeWaterY < 400) {
-    pipeWaterY +=6.7;
+    pipeWaterY +=6.7;// not even a timing, just 67
   }
   
   strokeWeight(0);
@@ -48,7 +54,7 @@ function draw() {
   circle(210, pipeWaterY, 16);
   
   // FIRST PIPE
-   
+    
   stroke(0);
   strokeWeight(2);
   fill('gray');
@@ -75,8 +81,8 @@ function draw() {
   
   //also funny i made infinite loop with numOfPipes 
   
-// Create a new pipe every 5 seconds
-if (ms - lastPipeTime > 5000) {
+// Create a new pipe every second
+if (ms - lastPipeTime > 1000) {
   randomPipe();
   lastPipeTime = ms; // Update the timestamp
 }// end of randomPipe maker
@@ -92,15 +98,19 @@ if (ms - lastPipeTime > 5000) {
 
 
 function randomPipe() {
+  if (noPipes === true) {
+   //dont do anything 
+  } else {
   pipeX = random(0, width);
   
   stroke(0);
-  strokeWeight(2)
+  strokeWeight(2);
   fill('gray');
   rect(pipeX, -1, 20, 50);
 
   //when a pipe appears, this grows
   numOfPipes += 1;
+  }
 }
 
 
@@ -109,6 +119,7 @@ function gameOver(isRoomFull) {
   if (isRoomFull === true) {
     fill('yellow');
     text('Game Over', 0, 300);
+    noPipes = true;
     newGameButton();
   }
 }
@@ -141,20 +152,25 @@ room with water so you don't drown!`,
     background(0);// clears the screen
     frameCount = 0; // for calcWaterHeight
     waterHeight = 0;
-    startTime = millis();
     pipeWaterY = 0;
+    numOfPipes = 1;
+    lastPipeTime = 0;
+    noPipes = false;// it was drawing pipes on the start new game screen soooooooo
+    previousHeightOfWater = 0;
+    startTime = millis();
   }
 }
 
 
-
 function calculateWaterHeight() {
-  let waterGrowthRate; // pixels per frame
+  //THE DRAIN, drains water when there are no pipes on screen
+  let drainRate = 1 / 4;
   
-  waterGrowthRate = numOfPipes;
+  let waterGrowthRate = numOfPipes / 5;
   
-  // FIX later should take numOfPipes into account
-  let heightOfWater = waterGrowthRate * frameCount;
+  let heightOfWater = waterGrowthRate + previousHeightOfWater - drainRate;
+  
+  previousHeightOfWater = heightOfWater;
   
   return heightOfWater; 
 }
@@ -164,7 +180,7 @@ function calculateWaterHeight() {
 // draw water
 function hotWaterRises() {
   //starts water rising when the water reaches floor
-  let waterStartTime = 900; // miliseconds
+  let waterStartTime = 1000; // miliseconds
   
   if (ms > waterStartTime) {
   let waterWidth = width;
@@ -174,7 +190,5 @@ function hotWaterRises() {
   stroke("blue")
   fill("blue")
   rect(0, height - waterHeight, waterWidth, waterHeight);
-  } else {
-    frameCount = 0; // right now waterHeight is calculated using framecount, this if statement will either draw the water or make sure the water starts at zero
   }
 }
